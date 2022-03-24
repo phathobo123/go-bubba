@@ -9,6 +9,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/phathobo123/go-bubba/graph"
 	"github.com/phathobo123/go-bubba/graph/generated"
+	database "github.com/phathobo123/go-bubba/internal/pkg/db/migrations/mysql"
 )
 
 const defaultPort = "8080"
@@ -18,6 +19,9 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
+
+	database.InitDB()
+	database.Migrate()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
